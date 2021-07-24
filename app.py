@@ -1,8 +1,23 @@
 from flask import Flask, redirect, render_template, session, request, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key='test'
+#configure database connected to mysql (used phpmyadmin)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/linklearn'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+#users is basically the table. 
+#allows u to call on its attributes for each piece of data about a user. e.g. user.id
+class users(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True)
+    username = db.Column("username", db.Text, nullable=False)
+    hash = db.Column("hash", db.Text, nullable=False)
+    def __repr__(self):
+        return '<Name %r>' % self.name
 
 @app.route('/')
 def index():
@@ -13,27 +28,28 @@ def login():
     """Log user in"""
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        
         # Forget any user_id
         session.clear()
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         # Ensure username was submitted
-        if not request.form.get("username"):
+        if not username:
             return apology("must provide username", 403)
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
+        elif not password:
             return apology("must provide password", 403)
 
-        #TODO, QUERY DB for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+        #identify the user that is attempting to login bassed on username:
+        user = users.query.filter_by(username=username).first()
 
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+        # Ensure username exists and password is tagged to username!:
+        if not user or not check_password_hash(user.hash, password):
             return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = user.id
 
         # Redirect user to home page
         flash("Log-in successful!")
@@ -59,30 +75,31 @@ def register():
         #above condition must be put because by default, method is GET.
         #and when they first enter the website, it's a GET request. so you shouldn't check for inputs.
         #only check the user inputs when the request.method is POST
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
 
-        #TODO, SQL here
-        users = db.execute("SELECT username FROM users")
-
+           #error checking: we expect user to return None if the username does not yet exist in users.
+        user = users.query.filter_by(username=username).first()
+    
         #error checking
-        if not request.form.get("username"):
+        if not username:
             return apology("must provide username", 400)
-        elif request.form.get("username") in [user["username"] for user in users]:
-            #each user is represented by a dict, in the whole list. the list is the value returned by db.execute("---") assigned to the variable users.
-            #user["username"] returns the username for each user(represented by dict) in the users (represented by list)
-            #hence the list comprehension gets a list of all available usernames.
+        #if not 404, means a user exists with this username, hence return apology.
+        elif user != None:
             return apology("that username already exists", 400)
-        elif not request.form.get("password"):
+        elif not password:
             return apology("must provide password", 400)
-        elif request.form.get("password") != request.form.get("confirmation"):
+        elif password != confirm_password:
             return apology("Password and Confirmation password do not match", 400)
 
-        #if nothing goes wrong, remember to hash password, then update users. no need to update cash as theres a default value for every new row:
-        else:
-            #TODO: SQL HERE
-            db.execute("INSERT INTO users (username, hash) VALUES (?,?)", request.form.get("username"), generate_password_hash(request.form.get("password")))
-            flash("Log in with your new account!")
-            return redirect("/login")
+        #if nothing goes wrong, remember to hash password, then update users. 
+        #create new user instance with username and corresponding pword hash, then add to db, then commit change.
+        user = users(username=username, hash=generate_password_hash(password)) 
+        db.session.add(user)
+        db.session.commit()
+        flash("Log in with your new account!")
+        return redirect("/login")
     else:
         #this handles GET requests. condition "else " is used because GET is the only other request method other than POST here.
         return render_template("register.html")
-        
