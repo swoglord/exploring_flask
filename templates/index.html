@@ -5,5 +5,29 @@ Home
 {% endblock %}
 
 {% block main %}
-Building a project to help its user consolidate links to use them to learn a certain topic!
+    {% for link in user_links if not link.deleted %}
+    <div class="form-group" style="margin-bottom:30px;">
+        <a href={{ link.url }} target="_blank">{{ link.nickname }}</a>
+        <br> 
+        <form style="display:inline" action="/" method="POST">
+            <textarea name="description" id="description" value= {{ link.description }}  class="form-control" cols="30" rows="10" disabled>{{ link.description }}</textarea>
+            <input type="hidden" name="link_id" value={{ link.id }}>
+            <br>
+            <button class="btn btn-primary" name="edit" value ="edit" id ="edit">Edit Description</button>
+        </form>
+        <script>
+            document.getElementById("edit").onclick = function() {
+                document.getElementById("description").removeAttribute("disabled");
+            }
+        // the script portion isnt working yet
+        //TODO: Allow users to edit the description or chnge the links nicknames and whatsoever directly.
+        </script>
+        <form style="display:inline" action="/" method="POST">
+            <input type="hidden" name="link_id" value={{ link.id }}>
+            <button class="btn btn-primary" type="submit" name="delete" value="delete">Delete Link</button>
+        </form>
+    </div>
+    {% else %}
+        You currently have no links saved! Click <a href="/add">here</a> to add!
+    {% endfor %}
 {% endblock %}

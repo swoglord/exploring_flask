@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Link
+{% endblock %}
+
+{% block main %}
+    <form action="/add" method="POST">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="url" placeholder="URL" type="url">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" class="form-control" name="nickname" placeholder="Nickname" type="text">
+        </div>
+        <div class="form-group">
+            <textarea autcomplete="off" class="form-control" name="description" placeholder="Enter a short description for this link to help you remember what it was about!" id="description" cols="30" rows="10"></textarea>
+        </div>
+                <button class="btn btn-primary" type="submit">Add Link</button>
+    </form>
+{% endblock %}

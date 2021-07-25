@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History 
+{% endblock %}
+
+{% block main %}
+    <h1> History (does not include permanently deleted links)</h1>
+    <table style="width:100%">
+        <tr>
+            <th>URL</th>
+            <th>Nickname</th>
+            <th>Description</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for link in user_links %}
+            <tr>
+                <td><a href={{ link.url }} target="_blank">{{ link.url }}</a></td>
+                <td>{{ link.nickname }}</td>
+                <td>{{ link.description }}</td>
+                <td>{{ link.timestamp }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

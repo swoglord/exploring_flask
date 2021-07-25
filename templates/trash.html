@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Trash
+{% endblock %}
+
+{% block main %}
+    <h1>Trash - Restore your links or delete permanently</h1>
+    <table style="width:100%">
+        <tr>
+            <th>URL</th>
+            <th>Nickname</th>
+            <th>Description</th>
+            <th>Timestamp</th>
+            <th>Restore</th>
+            <th>Delete Permanently</th>
+        </tr>
+        {% for link in user_links if link.deleted %}
+            <tr>
+                <td><a href={{ link.url }} target="_blank">{{ link.url }}</a></td>
+                <td>{{ link.nickname }}</td>
+                <td>{{ link.description }}</td>
+                <td>{{ link.timestamp }}</td>
+                <td>
+                    <form action="/trash" method="POST">
+                        <input type="hidden" name="restore_id" value={{link.id}}>
+                        <button class="btn btn-primary" type="submit" name="restore" value="restore">Restore</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/trash" method="POST">
+                        <input type="hidden" name="delete_id" value={{link.id}}>
+                        <button class="btn btn-primary" type="submit" name="delete" value ="delete">Delete Permanently</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+        <tr>
+            Your trash is empty, it will only fill up if you delete some links from the <a href='/'>homepage</a>!
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

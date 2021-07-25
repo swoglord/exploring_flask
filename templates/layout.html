@@ -37,13 +37,13 @@
                 <ul class="navbar-nav mr-auto mt-2">
                         {% if session.user_id %}
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/">TODO</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/">TODO</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/">TODO</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/add">Add</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/trash">Trash</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                         {% else %}
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
