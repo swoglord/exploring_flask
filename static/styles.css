@@ -46,7 +46,7 @@ main img
     max-width: 100%;
 }
 
-main .boxed 
+main .styled-table
 {
-
+    margin:0px;
 }

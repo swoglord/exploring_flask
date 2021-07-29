@@ -6,21 +6,31 @@ Home
 
 {% block main %}
     {% for link in user_links if not link.deleted %}
-    <div class="form-group" style="margin-bottom:30px;">
+    <div class="form-group" style="margin:20px; display:inline-block">
         <a href={{ link.url }} target="_blank">{{ link.nickname }}</a>
         <br> 
-        <form style="display:inline" action="/" method="POST">
-            <textarea name="description" id="description" value= {{ link.description }}  class="form-control" cols="30" rows="10" disabled>{{ link.description }}</textarea>
+        <form id="form_{{ link.id }}" style="display:inline" action="/" method="POST">
+            <textarea name="description_{{ link.id }}" id="description_{{ link.id }}" class="form-control" cols="30" rows="10" disabled>{{ link.description }}</textarea>
             <input type="hidden" name="link_id" value={{ link.id }}>
             <br>
-            <button class="btn btn-primary" name="edit" value ="edit" id ="edit">Edit Description</button>
         </form>
+        <button class="btn btn-primary" name="edit" value ="edit" id ="edit_{{ link.id }}">Edit Description</button>
         <script>
-            document.getElementById("edit").onclick = function() {
-                document.getElementById("description").removeAttribute("disabled");
-            }
-        // the script portion isnt working yet
-        //TODO: Allow users to edit the description or chnge the links nicknames and whatsoever directly.
+                document.getElementById("edit_{{ link.id }}").onclick = function() {
+                document.getElementById("description_{{ link.id }}").disabled = false;
+                document.getElementById("edit_{{ link.id }}").style.display ='none';
+                let save_description = document.createElement("button");
+                let node = document.createTextNode("Save Description");
+                save_description.appendChild(node);
+                save_description.setAttribute('class', 'btn btn-primary');
+                save_description.setAttribute('style', 'display:inline-block');
+                save_description.setAttribute('name', 'save_desc');
+                save_description.setAttribute('value', 'save_desc');
+                save_description.setAttribute('type', 'submit');
+                document.getElementById("form_{{ link.id }}").appendChild(save_description);
+                }
+
+                // edit and save description only works for the top item!
         </script>
         <form style="display:inline" action="/" method="POST">
             <input type="hidden" name="link_id" value={{ link.id }}>

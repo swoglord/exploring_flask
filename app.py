@@ -49,6 +49,7 @@ class links(db.Model):
     description = db.Column("description", db.Text, nullable=False)
     timestamp = db.Column("timestamp", db.TIMESTAMP, nullable=False)
     deleted = db.Column("deleted", db.Boolean, default=False, nullable=False)
+    permdeleted = db.Column("permdeleted", db.Boolean, default=False, nullable=False)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -133,6 +134,14 @@ def index():
             db.session.commit()
             flash("You deleted the link, {link}! It's now in your trash and you can restore it or permanently delete it as you wish.".format(link=link_to_delete.nickname))
             return redirect('/trash')
+        if request.form.get("save_desc"):
+            link_id = request.form.get("link_id")
+            new_description = request.form.get("description"+"_"+link_id)
+            link = links.query.filter_by(id=link_id).first()
+            link.description = new_description
+            db.session.commit()
+            flash("You edited and saved a description!")
+            return redirect("/")
     user_links = links.query.filter_by(username=session["username"]).all()
     return render_template("index.html", user_links=user_links)
 
@@ -179,7 +188,7 @@ def trash():
             delete_id = request.form.get("delete_id")
             link_to_delete = links.query.filter_by(id=delete_id).first()
             nickname = link_to_delete.nickname
-            db.session.delete(link_to_delete)
+            link_to_delete.permdeleted = True
             db.session.commit()
             flash("You permanently deleted the link, {nickname}!".format(nickname=nickname))
             return redirect('/trash')

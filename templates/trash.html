@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Trash - Restore your links or delete permanently</h1>
-    <table style="width:100%">
-        <tr>
+    <h1>Trash</h1>
+    <table id="table" style="width:100%">
+        <tr style="margin-bottom:30px;">
             <th>URL</th>
             <th>Nickname</th>
             <th>Description</th>
@@ -15,8 +15,8 @@
             <th>Restore</th>
             <th>Delete Permanently</th>
         </tr>
-        {% for link in user_links if link.deleted %}
-            <tr>
+        {% for link in user_links if link.deleted and not link.permdeleted %}
+            <tr style="margin-bottom:30px;">
                 <td><a href={{ link.url }} target="_blank">{{ link.url }}</a></td>
                 <td>{{ link.nickname }}</td>
                 <td>{{ link.description }}</td>
@@ -38,6 +38,9 @@
         <tr>
             Your trash is empty, it will only fill up if you delete some links from the <a href='/'>homepage</a>!
         </tr>
+        <script>
+            document.getElementById("table").style.display ='none';
+        </script>
         {% endfor %}
     </table>
 {% endblock %}
