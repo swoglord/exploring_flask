@@ -5,7 +5,7 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.exceptions import (HTTPException, InternalServerError,
                                  default_exceptions)
-from helpers import apology, login_required, adjust_timezone
+from helpers import apology, login_required
 from flask_sqlalchemy import SQLAlchemy
 import os
 import re
