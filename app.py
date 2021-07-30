@@ -55,7 +55,7 @@ class links(db.Model):
     url = db.Column("url", db.Text, nullable=False)
     nickname = db.Column("nickname", db.Text, nullable=False)
     description = db.Column("description", db.Text, nullable=False)
-    timestamp = db.Column("timestamp", db.TIMESTAMP, nullable=False)
+    timestamp = db.Column("timestamp", db.DateTime, nullable=False)
     deleted = db.Column("deleted", db.Boolean, default=False, nullable=False)
     permdeleted = db.Column("permdeleted", db.Boolean, default=False, nullable=False)
 
@@ -224,3 +224,6 @@ def errorhandler(e):
 # Listen for errors
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
+
+if __name__ == "__main__":
+    db.create_all()
