@@ -7,6 +7,7 @@ from werkzeug.exceptions import (HTTPException, InternalServerError,
                                  default_exceptions)
 from helpers import apology, login_required
 from flask_sqlalchemy import SQLAlchemy
+from os import environ
 
 app = Flask(__name__)
 app.secret_key='test'
@@ -28,6 +29,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 #configure database connected to mysql (used phpmyadmin)
+#'mysql://root@localhost/linklearn' is the URI for local mySQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/linklearn'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
