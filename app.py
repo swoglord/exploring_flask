@@ -5,7 +5,7 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.exceptions import (HTTPException, InternalServerError,
                                  default_exceptions)
-from helpers import apology, login_required
+from helpers import apology, login_required, adjust_timezone
 from flask_sqlalchemy import SQLAlchemy
 import os
 import re
@@ -55,7 +55,7 @@ class links(db.Model):
     url = db.Column("url", db.Text, nullable=False)
     nickname = db.Column("nickname", db.Text, nullable=False)
     description = db.Column("description", db.Text, nullable=False)
-    timestamp = db.Column("timestamp", db.DateTime, nullable=False)
+    timestamp = db.Column("timestamp", db.TIMESTAMP, nullable=False)
     deleted = db.Column("deleted", db.Boolean, default=False, nullable=False)
     permdeleted = db.Column("permdeleted", db.Boolean, default=False, nullable=False)
 
@@ -179,6 +179,8 @@ def add():
 @login_required
 def history():
     user_links = links.query.filter_by(username=session["username"]).all()
+    for link in user_links:
+        link.timestamp = adjust_timezone(link.timestamp)
     return render_template("history.html", user_links=user_links)
 
 @app.route("/trash", methods=['GET','POST'])
