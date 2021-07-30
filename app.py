@@ -8,9 +8,10 @@ from werkzeug.exceptions import (HTTPException, InternalServerError,
 from helpers import apology, login_required
 from flask_sqlalchemy import SQLAlchemy
 import os
+import re
 
 app = Flask(__name__)
-app.secret_key='test'
+app.secret_key = os.environ.get("SECRET_KEY")
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
@@ -30,7 +31,12 @@ Session(app)
 
 #configure database connected to mysql (used phpmyadmin)
 #'mysql://root@localhost/linklearn' is the URI for local mySQL database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# rest of connection code using the connection string `uri`
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
