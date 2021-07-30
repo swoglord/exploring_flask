@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from tempfile import mkdtemp
 from flask import Flask, redirect, render_template, session, request, flash
 from flask_session import Session
@@ -167,7 +167,7 @@ def add():
         if not url or not nickname or not description:
             return apology("You must fill in all fields to add in a link!")
         #if nothing wrong, add this link to the table, links!
-        timestamp = datetime.now()
+        timestamp = datetime.now() + timedelta(hours=8)
         link = links(username=username, url=url, nickname=nickname, description=description, timestamp=timestamp)
         db.session.add(link)
         db.session.commit()
@@ -179,9 +179,6 @@ def add():
 @login_required
 def history():
     user_links = links.query.filter_by(username=session["username"]).all()
-    for link in user_links:
-        link.timestamp = adjust_timezone(link.timestamp)
-        db.session.commit()
     return render_template("history.html", user_links=user_links)
 
 @app.route("/trash", methods=['GET','POST'])

@@ -1,7 +1,5 @@
 from flask import redirect, render_template, session
 from functools import wraps
-from datetime import datetime
-import time
 
 def apology(message, code=400):
     """Render message as an apology to user."""
@@ -30,9 +28,3 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
-
-
-def adjust_timezone(utc_datetime):
-    now_timestamp = time.time()
-    offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
-    return utc_datetime + offset    
