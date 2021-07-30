@@ -151,7 +151,7 @@ def index():
             flash("You edited and saved a description!")
             return redirect("/")
     user_links = links.query.filter_by(username=session["username"]).all()
-    return render_template("index.html", user_links=user_links)
+    return render_template("index.html", user_links=user_links, username=session["username"])
 
 
 @app.route('/add', methods=["GET", "POST"])
