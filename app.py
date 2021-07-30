@@ -181,6 +181,7 @@ def history():
     user_links = links.query.filter_by(username=session["username"]).all()
     for link in user_links:
         link.timestamp = adjust_timezone(link.timestamp)
+        db.session.commit()
     return render_template("history.html", user_links=user_links)
 
 @app.route("/trash", methods=['GET','POST'])
