@@ -7,6 +7,13 @@ Home
 {% block main %}
     <h1>Welcome, {{ username }}</h1>
     <p>Use <a href="/">LinkLEARN</a> to help you consolidate links and accompanying short descriptions to help accelerate your learning!</p>
+    <button class="btn btn-primary" id="add">Add Link</button>
+    <script>
+        document.getElementById("add").onclick = function(){
+            window.location.href = "/add"
+        }
+    </script>
+    <br>
     {% for link in user_links if not link.deleted %}
     <div class="form-group" style="margin:20px; display:inline-block">
         <a href={{ link.url }} target="_blank">{{ link.nickname }}</a>
