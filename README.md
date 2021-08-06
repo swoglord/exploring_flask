@@ -16,7 +16,7 @@ The latest update is that LinkLEARN's infrastructure is all in place. I'd consid
 /index \
 The home(or index) route displays all of the links (in the form of an anchor tag with their nicknames as the HTML InnerText) as well as their corresponding descriptions.\
 Each link's description can be edited and saved again. This refreshes the page.\
-Each link can also be deleted. I implemented a trash (see "Trash" ) system so that the link goes to a trash bin where it can be either restored back to the homepage, or permanently deleted.
+Each link can also be deleted. I implemented a [trash](#trash) system so that the link goes to a trash bin where it can be either restored back to the homepage, or permanently deleted.
 
 ### Add
 The user adds links through this route. 3 fields need to be filled: URL, Nickname and Description.\
@@ -27,7 +27,7 @@ This anchor tag is displayed on the homepage along with its description and when
 As explained previously, all of the user's temporarily deleted links are shown here and the user has the option to either restore the link to be displayed back in the homepage, or to be permanently deleted and only kept in History.
 
 ### History 
-History displays all of the links added. I did put more thought into history to make it more useful to the user by indicating the current status of the links added. For each link shown in history, it is either in the homepage, trash, or permanently deleted(cannot restore). *I do think that History will be more useful if it tracks all the actions to links as well: editing descriptions, time of adding and time of deletions. However as the app is still in the MVP phase, I have yet to implement this. Will consider doing it in future*
+History displays all of the links added. I did put more thought into history to make it more useful to the user by indicating the current status of the links added. For each link shown in history, it is either in the [homepage](#home), [trash](#trash) or permanently deleted(cannot restore). *I do think that History will be more useful if it tracks all the actions to links as well: editing descriptions, time of adding and time of deletions. However as the app is still in the MVP phase, I have yet to implement this. Will consider doing it in future*
 
 ### Register, Log in and Log out 
 I did take CS50's implementation details for this but SQL was all done using Flask-SQLAlchemy. CS50 saved alot of hassle on this one!
@@ -37,12 +37,12 @@ I did take CS50's implementation details for this but SQL was all done using Fla
 
 #### COMPLETED: 
 - Add links 
-- Display Links on Home page 
-- History of links 
+- Display Links on [Homepage](#home) 
+- [History](#history) of links 
 - Temporarily Delete links 
 - Permanently delete links  
 - Restoration of links 
-- Aesthetics of Home 
+- Aesthetics of [Home](#home) 
 - Edit descriptions and save them.
 - Fix timezone for timestamp *but not optimised*
 - Register button in the centre of login page
@@ -51,7 +51,7 @@ I did take CS50's implementation details for this but SQL was all done using Fla
 
 #### TODO: ####
 - Categorising links
-- Displaying ALL actions in History
-- Converting apology function into on-screen message
+- Displaying ALL actions in [History](#history)
+- Converting apology route into on-screen message
 - Add change password functionality
 - email functionality
