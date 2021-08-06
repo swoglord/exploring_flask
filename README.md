@@ -12,7 +12,7 @@ The latest update is that LinkLEARN's infrastructure is all in place. I'd consid
 
 ## Let's run through the routes of the app 
 
-### Home {#home-id}
+### Home 
 /index \
 The home(or index) route displays all of the links (in the form of an anchor tag with their nicknames as the HTML InnerText) as well as their corresponding descriptions.\
 Each link's description can be edited and saved again. This refreshes the page.\
@@ -20,7 +20,7 @@ Each link can also be deleted. I implemented a trash (see "Trash" ) system so th
 
 ### Add
 The user adds links through this route. 3 fields need to be filled: URL, Nickname and Description.\
-The cool thing about the nickname field to me is that I have implemented the app such that it displays the link in [Home](#home-id) as an anchor tag with the Nickname as its HTML Innertext.\
+The cool thing about the nickname field to me is that I have implemented the app such that it displays the link in [Home](#home) as an anchor tag with the Nickname as its HTML Innertext.\
 This anchor tag is displayed on the homepage along with its description and when clicked on, redirects the user to the stored URL in a new tab by default.
 
 ### Trash 
