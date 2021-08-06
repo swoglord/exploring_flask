@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from tempfile import mkdtemp
 from flask import Flask, redirect, render_template, session, request, flash
 from flask_session import Session
@@ -7,9 +7,11 @@ from werkzeug.exceptions import (HTTPException, InternalServerError,
                                  default_exceptions)
 from helpers import apology, login_required
 from flask_sqlalchemy import SQLAlchemy
+import os
+import re
 
 app = Flask(__name__)
-app.secret_key='test'
+app.secret_key = os.environ.get("SECRET_KEY")
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
@@ -28,7 +30,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 #configure database connected to mysql (used phpmyadmin)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/linklearn'
+#'mysql://root@localhost/linklearn' is the URI for local mySQL database
+
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# rest of connection code using the connection string `uri`
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -143,7 +151,7 @@ def index():
             flash("You edited and saved a description!")
             return redirect("/")
     user_links = links.query.filter_by(username=session["username"]).all()
-    return render_template("index.html", user_links=user_links)
+    return render_template("index.html", user_links=user_links, username=session["username"])
 
 
 @app.route('/add', methods=["GET", "POST"])
@@ -159,7 +167,7 @@ def add():
         if not url or not nickname or not description:
             return apology("You must fill in all fields to add in a link!")
         #if nothing wrong, add this link to the table, links!
-        timestamp = datetime.now()
+        timestamp = datetime.now() + timedelta(hours=8)
         link = links(username=username, url=url, nickname=nickname, description=description, timestamp=timestamp)
         db.session.add(link)
         db.session.commit()
@@ -216,3 +224,4 @@ def errorhandler(e):
 # Listen for errors
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
+
