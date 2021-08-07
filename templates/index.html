@@ -6,17 +6,17 @@ Home
 
 {% block main %}
     <h1>Welcome, {{ username }}</h1>
-    <p>Use <a href="/">LinkLEARN</a> to help you consolidate links and accompanying short descriptions to help accelerate your learning!</p>
+    <p class="intro-outro">Use <a href="/">LinkLEARN</a> to help you consolidate links and accompanying short descriptions to help accelerate your learning!</p>
     <button class="btn btn-primary" id="add">Add Link</button>
     <script>
-        document.getElementById("add").onclick = function(){
+        document.getElementById("add").onclick = function() {
             window.location.href = "/add"
         }
     </script>
     <br>
     {% for link in user_links if not link.deleted %}
     <div class="form-group" style="margin:20px; display:inline-block">
-        <a href={{ link.url }} target="_blank">{{ link.nickname }}</a>
+        <a class="btn btn-outline-info" href={{ link.url }} target="_blank">{{ link.nickname }}</a>
         <br> 
         <form id="form_{{ link.id }}" style="display:inline" action="/" method="POST">
             <textarea name="description_{{ link.id }}" id="description_{{ link.id }}" class="form-control" cols="30" rows="10" disabled>{{ link.description }}</textarea>
@@ -47,6 +47,6 @@ Home
         </form>
     </div>
     {% else %}
-        You currently have no links saved! Click <a href="/add">here</a> to add!
+        <p class="intro-outro">You currently have no links saved! Click <a href="/add">here</a> to add!</p>
     {% endfor %}
 {% endblock %}

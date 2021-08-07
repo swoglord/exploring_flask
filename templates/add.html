@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block main %}
+    <h1>Add Link</h1>
+    <p class="intro-outro">Add a useful link here!</p>
+    <p class="intro-outro">The Nickname is what you'll see on your <a href="/index">homepage</a> along with its description, <br> and clicking on it brings you to the URL that you stored! <br></p>
+    <p class="intro-outro">You may edit the description as you wish later on.</p>
     <form action="/add" method="POST">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="url" placeholder="URL" type="url">

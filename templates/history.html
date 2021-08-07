@@ -6,16 +6,16 @@
 
 {% block main %}
     <h1> History of all links added </h1>
-    <table id="table" style="width:100%;">
-        <tr style="margin-bottom:30px;">
-            <th>URL</th>
-            <th>Nickname</th>
-            <th>Description</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-        </tr>
-        {% for link in user_links %}
-            <tr style="margin-bottom:30px;">
+        <table class="table" id="history">
+            <tr>
+                <th>URL</th>
+                <th>Nickname</th>
+                <th>Description</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+            </tr>
+            {% for link in user_links %}
+            <tr>
                 <td><a href={{ link.url }} target="_blank">{{ link.url }}</a></td>
                 <td>{{ link.nickname }}</td>
                 <td>{{ link.description }}</td>
@@ -30,11 +30,11 @@
                 <td style="color:red;">Permanently deleted</td>
                 {% endif %}
             </tr>
-        {% else %}
-        <script>
-            document.getElementById("table").style.display ='none';
-        </script>
+            {% else %}
+            <script>
+                document.getElementById("history").style.display ='none';
+            </script>
         <tr>You must be a new user!</tr>     
         {% endfor %}
     </table>
-{% endblock %}
+    {% endblock %}
